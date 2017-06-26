@@ -119,23 +119,19 @@ func TestQueryTrades(t *testing.T) {
 }
 
 func TestOpenOrdersTrailingStop(t *testing.T) {
-	fixture := "./fixtures/open_orders_trailing_limit.json"
-	resp, err := ioutil.ReadFile(fixture)
-	if err != nil {
-		t.Fatalf("Could not open fixture file %s", fixture)
-	}
+	resp := loadFixture(t, "./fixtures/open_orders_trailing_limit.json")
 
 	ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprintln(w, string(resp))
 	}))
 	defer ts.Close()
 
-	privateAPI := NewWithClient("", "", http.DefaultClient, &Config{
+	mockedApi := NewWithClient("", "", http.DefaultClient, &Config{
 		url: ts.URL,
 		apiversion: "0",
 		ua: "Kraken GO API Agent test mode",
 	})
-	orders, err := privateAPI.OpenOrders(map[string]string{})
+	orders, err := mockedApi.OpenOrders(map[string]string{})
 
 	if err != nil {
 		t.Errorf("Got err for OpenOrders fetch: %s", err)
@@ -172,23 +168,19 @@ func TestOpenOrdersTrailingStop(t *testing.T) {
 }
 
 func TestOpenOrdersLimit(t *testing.T) {
-	fixture := "./fixtures/open_orders_limit.json"
-	resp, err := ioutil.ReadFile(fixture)
-	if err != nil {
-		t.Fatalf("Could not open fixture file %s", fixture)
-	}
+	resp := loadFixture(t, "./fixtures/open_orders_limit.json")
 
 	ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprintln(w, string(resp))
 	}))
 	defer ts.Close()
 
-	privateAPI := NewWithClient("", "", http.DefaultClient, &Config{
+	mockedApi := NewWithClient("", "", http.DefaultClient, &Config{
 		url: ts.URL,
 		apiversion: "0",
 		ua: "Kraken GO API Agent test mode",
 	})
-	orders, err := privateAPI.OpenOrders(map[string]string{})
+	orders, err := mockedApi.OpenOrders(map[string]string{})
 
 	if err != nil {
 		t.Errorf("Got err for OpenOrders fetch: %s", err)
@@ -223,3 +215,49 @@ func TestOpenOrdersLimit(t *testing.T) {
 	//}
 	//fmt.Printf("OpenOrders %s\n", string(j))
 }
+
+func TestTradeBalance(t *testing.T) {
+	resp := loadFixture(t, "./fixtures/trade_balance.1.json")
+
+	ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		fmt.Fprintln(w, string(resp))
+	}))
+	defer ts.Close()
+
+	mockedApi := NewWithClient("", "", http.DefaultClient, &Config{
+		url: ts.URL,
+		apiversion: "0",
+		ua: "Kraken GO API Agent test mode",
+	})
+
+	balance, err := mockedApi.TradeBalance(map[string]string{})
+	if err != nil {
+		t.Errorf("Got error %s", err)
+	}
+
+	expected := &TradeBalanceResponse{
+		EquivalentBalance: 3371.9760,
+		TradeBalance: 3371.9760,
+		MarginAmount: 0,
+		UnrealizedNetProfit: 0,
+		Cost: 0,
+		Valuation: 0,
+		Equity: 3371.9760,
+		FreeMargin: 3371.9760,
+	}
+
+	if *balance != *expected {
+		t.Errorf("Expected \n%+v \ngot \n%+v\n", expected, balance)
+	}
+}
+
+func loadFixture(t *testing.T, path string) []byte {
+	fixture := "./fixtures/trade_balance.1.json"
+	resp, err := ioutil.ReadFile(path)
+	if err != nil {
+		t.Fatalf("Could not open fixture file %s", fixture)
+	}
+
+	return resp
+}
+

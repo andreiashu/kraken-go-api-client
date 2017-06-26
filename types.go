@@ -1,13 +1,13 @@
 package krakenapi
 
 const (
-	DASHEUR = "DASHEUR"
-	DASHUSD = "DASHUSD"
-	DASHXBT = "DASHXBT"
-	GNOETH = "GNOETH"
-	GNOEUR = "GNOEUR"
-	GNOUSD = "GNOUSD"
-	GNOXBT = "GNOXBT"
+	DASHEUR  = "DASHEUR"
+	DASHUSD  = "DASHUSD"
+	DASHXBT  = "DASHXBT"
+	GNOETH   = "GNOETH"
+	GNOEUR   = "GNOEUR"
+	GNOUSD   = "GNOUSD"
+	GNOXBT   = "GNOXBT"
 	USDTZUSD = "USDTZUSD"
 	XETCXETH = "XETCXETH"
 	XETCXXBT = "XETCXXBT"
@@ -50,7 +50,7 @@ const (
 	XZECXXBT = "XZECXXBT"
 	XZECZEUR = "XZECZEUR"
 	XZECZUSD = "XZECZUSD"
-	)
+)
 
 const (
 	BUY    = "b"
@@ -75,13 +75,13 @@ type TimeResponse struct {
 
 // AssetPairsResponse includes asset pair informations
 type AssetPairsResponse struct {
-	DASHEUR AssetPairInfo
-	DASHUSD AssetPairInfo
-	DASHXBT AssetPairInfo
-	GNOETH AssetPairInfo
-	GNOEUR AssetPairInfo
-	GNOUSD AssetPairInfo
-	GNOXBT AssetPairInfo
+	DASHEUR  AssetPairInfo
+	DASHUSD  AssetPairInfo
+	DASHXBT  AssetPairInfo
+	GNOETH   AssetPairInfo
+	GNOEUR   AssetPairInfo
+	GNOUSD   AssetPairInfo
+	GNOXBT   AssetPairInfo
 	USDTZUSD AssetPairInfo
 	XETCXETH AssetPairInfo
 	XETCXXBT AssetPairInfo
@@ -165,7 +165,7 @@ type AssetPairInfo struct {
 // AssetsResponse includes asset informations
 type AssetsResponse struct {
 	DASH AssetInfo
-	GNO AssetInfo
+	GNO  AssetInfo
 	KFEE AssetInfo
 	USDT AssetInfo
 	XDAO AssetInfo
@@ -231,15 +231,27 @@ type BalanceResponse struct {
 	ZUSD float32 `json:"ZUSD,string"`
 }
 
+type TradeBalanceResponse struct {
+	EquivalentBalance   float64 `json:"eb,string"`
+	TradeBalance        float64 `json:"tb,string"`
+	MarginAmount        float64 `json:"m,string"`
+	UnrealizedNetProfit float64 `json:"n,string"`
+	Cost                float64 `json:"c,string"`
+	Valuation           float64 `json:"v,string"`
+	Equity              float64 `json:"e,string"`
+	FreeMargin          float64 `json:"mf,string"`
+	MarginLevel         float64 `json:"ml,string"`
+}
+
 // TickerResponse includes the requested ticker pairs
 type TickerResponse struct {
-	DASHEUR PairTickerInfo
-	DASHUSD PairTickerInfo
-	DASHXBT PairTickerInfo
-	GNOETH PairTickerInfo
-	GNOEUR PairTickerInfo
-	GNOUSD PairTickerInfo
-	GNOXBT PairTickerInfo
+	DASHEUR  PairTickerInfo
+	DASHUSD  PairTickerInfo
+	DASHXBT  PairTickerInfo
+	GNOETH   PairTickerInfo
+	GNOEUR   PairTickerInfo
+	GNOUSD   PairTickerInfo
+	GNOXBT   PairTickerInfo
 	USDTZUSD PairTickerInfo
 	XETCXETH PairTickerInfo
 	XETCXXBT PairTickerInfo
